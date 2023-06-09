@@ -6,7 +6,7 @@ by taking into account the past prices and attempting to integrate a price predi
 
 - [About](#about)
 - [Technologies](#technologies)
-- [Get started](#get started)
+- [Get started](#get_started)
 - [Installing](#installing)
 - [Usage](#usage)
 - [API](#api)
@@ -43,7 +43,7 @@ gunicorn = "^20.1.0"
 setuptools = "^67.8.0"  
 MongoDB
 
-## Get started
+## Get_started
 1. The code assumes the database in mongo is already created: 'web_scraper'
 2. Create the collection 'urls' with field 'link' and manually add the weblink. 
 Add as many links as you want. Or simply uncomment the lines from main.py related to
