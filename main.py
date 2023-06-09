@@ -1,25 +1,33 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-
+from datetime import datetime
 import undetected_chromedriver as uc
+
 from database import MongoConnector
 from product import Product
 from fastapi import FastAPI
 from api.v1 import api_endpoints
+
 # from fastapi.middleware.wsgi import WSGIMiddleware
 # from dash_pages import app_dash
 
-from datetime import datetime
 
+# Added options to run code in headless mode. For this to run, added version_main when instantiating driver
+options = uc.ChromeOptions()
+options.add_argument('--headless')
 
 chrome_path = 'C:/Users/George/Desktop/chromedrive/chromedriver.exe'
 s = Service(chrome_path)
-driver = uc.Chrome(service=s)
+driver = uc.Chrome(service=s, version_main=112, options=options)
 
 now = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 connector = MongoConnector()
 urls_data = connector.list('urls')
-urls = [url["link"] for url in urls_data]
+# you can also add a list of urls to insert in mongo db
+urls = []
+if not urls:
+    urls = [url["link"] for url in urls_data]
+
 
 app = FastAPI()
 app.include_router(api_endpoints)
@@ -29,8 +37,9 @@ app.include_router(api_endpoints)
 if __name__ == '__main__':
     # print(urls)
     for url in urls:
-        # d = {'link': url}
-        # connector.insert_one('urls', d)
+        # uncomment if you want to insert the links in the db automatically
+        # link_dict = {'link': url}
+        # connector.insert_one('urls', link_dict)
         driver.get(url)
         product = {}
 
@@ -84,16 +93,18 @@ if __name__ == '__main__':
         if result_product:
             db_product = Product(**result_product)
             last_price = db_product.price_history[-1]['price']
-            print(last_price)
+            print(f'Last price from the database is {last_price}')
             if my_product.price_history[0]['price'] != last_price:
                 # Update the price_history with the new date and price
                 connector.update_history('products', my_product.sku, my_product.price_history[0])
                 print(f"Price history updated for SKU: {my_product.sku}")
+            else:
+                print(f"Price remains the same for SKU: {my_product.sku}")
             if my_product.image != result_product['image']:
                 connector.update_one('products', {'image': result_product['image']}, {'image': my_product.image})
                 print('Images updated in the database.')
             else:
-                print(f"Price remains the same for SKU: {my_product.sku}")
+                print(f"Image remains the same for SKU: {my_product.sku}")
         else:
             # Insert the whole product with the initial price_history
             connector.insert_one('products', my_product.dict())
@@ -102,11 +113,5 @@ if __name__ == '__main__':
     # Launch the application
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=5000, log_level="info")
-
-
-
-
-
-
 
 

@@ -45,7 +45,7 @@ class MongoConnector(Singleton, StorageObject):
 
         return result
 
-    def read_sku(self, collection_name: str, sku: int, projection=None) -> dict:
+    def read_sku(self, collection_name: str, sku: int | str, projection=None) -> dict:
         collection = self.select_collection(collection_name)
         if not projection:
             result = collection.find_one({"sku": sku})

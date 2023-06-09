@@ -6,6 +6,7 @@ by taking into account the past prices and attempting to integrate a price predi
 
 - [About](#about)
 - [Technologies](#technologies)
+- [Get started](#get started)
 - [Installing](#installing)
 - [Usage](#usage)
 - [API](#api)
@@ -41,6 +42,13 @@ dash-core-components = "^2.0.0"
 gunicorn = "^20.1.0"  
 setuptools = "^67.8.0"  
 MongoDB
+
+## Get started
+1. The code assumes the database in mongo is already created: 'web_scraper'
+2. Create the collection 'urls' with field 'link' and manually add the weblink. 
+Add as many links as you want. Or simply uncomment the lines from main.py related to
+adding urls from a given list with your urls.
+3. Mongo is running on default URI "mongodb://localhost:27017"
 
 ## Installing
 Install the project dependencies from the toml file.
