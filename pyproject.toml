@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "scraper-emag"
+name = "price_scraper"
 version = "0.1.0"
 description = ""
 authors = ["AlinaBuchi <alina_florina_buchi@yahoo.com>"]
 readme = "README.md"
-packages = [{include = "scraper_emag"}]
+packages = [{include = "price_scraper"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
