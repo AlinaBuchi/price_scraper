@@ -14,17 +14,20 @@ by taking into account the past prices and attempting to integrate a price predi
 
 ## About
 
-The app scrapes urls from mongoDB and inserts products.
-If the products exist already in the collection, we check if the image link is different or if the price has changed.
+The app scrapes urls from mongoDB and inserts products in the db if they do not exist.
+If the products already exist in the collection, we check if the image link is different or if the price has changed.
 In both cases, the data is updated.
 After the database is populated/updated, the uvicorn server is started and the endpoints
 endpoints can be accessed to manipulate data.
 For viewing data, we can run dash_pages/price_history.py to see the prices and dates 
 on the chart, together with the image and estimated future price. Dropdown list with
-multi options available.
+multi options available. For testing purposes, I used links from emag website.
+
+![dash_1](images/dash_1.PNG)
+![dash_2](images/dash_2.PNG)
 
 ## Technologies
-python = "^3.10"  
+python = "^3.10"  -->undetected-chromedriver working on python 3.10.5 without issues . Encountered issues like OSError: [WinError 6] The handle is invalid when using 3.11  
 selenium = "^4.9.1"  
 pymongo = "^4.3.3"  
 undetected-chromedriver = "^3.4.7"  
@@ -44,6 +47,7 @@ setuptools = "^67.8.0"
 MongoDB
 
 ## Get_started
+!!! undetected-chromedriver working on python 3.10.5 without issues . Encountered issues like <OSError: [WinError 6] The handle is invalid> when using 3.11  
 1. The code assumes the database in mongo is already created: 'web_scraper'
 2. Create the collection 'urls' with field 'link' and manually add the weblink. 
 Add as many links as you want. Or simply uncomment the lines from main.py related to

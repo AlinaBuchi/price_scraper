@@ -82,8 +82,13 @@ if __name__ == '__main__':
         recommendation_list = []
         for recommendation in data_carousel:
             art = recommendation.get_attribute('data-name')
+            # print(type(art))
             recommendation_list.append(art)
+        # added the below line because the code crashed after the section was modified on the website
+        # and had items of <class 'NoneType'> causing Pydantic validation errors
+        recommendation_list = [item for item in recommendation_list if item is not None]
         product.update({'recommendations': recommendation_list})
+
 
         # Create a Product object with the data from the dictionary scraped
         my_product = Product(**product)
